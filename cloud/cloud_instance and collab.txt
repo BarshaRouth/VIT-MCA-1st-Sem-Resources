@@ -1,0 +1,31 @@
+Write Your Python Program: 
+nano my_script.py
+
+Write your Python code inside the file. For example:
+print("Hello, EC2!")
+
+Save and exit the editor (in nano, you can do this by pressing CTRL + X, then Y, and Enter).
+
+Run Your Python Program: 
+python3 my_script.py
+
+
+num1=23
+num2=55
+print('Sum is ',num1+num2)
+----------------------
+
+
+n = 153  # or n=int(input()) -> taking input from user
+s = n  # assigning input value to the s variable
+b = len(str(n))
+sum1 = 0
+while n != 0:
+    r = n % 10
+    sum1 = sum1+(r**b)
+    n = n//10
+if s == sum1:
+    print("The given number", s, "is armstrong number")
+else:
+    print("The given number", s, "is not armstrong number")
+ 

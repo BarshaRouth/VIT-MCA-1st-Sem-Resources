@@ -1,0 +1,75 @@
+create table PROFESSOR(Prof_id varchar(20),Prof_name varchar(20),Email varchar(20),Mobile number(10),Speciality varchar(20),Dept_id varchar(20));
+create table SCHOOL(SCode varchar(20),Scl_name varchar(20),Prof_id varchar(20),Location varchar(20));
+create table DEPARTMENT(Dept_id varchar(20),Dname varchar(20),Scode varchar(20),Prof_id varchar(20));
+create table COURSE (Crs_code varchar(20),Crs_name varchar(20),Description varchar(50),Credits number(10),Hours number(10));
+CREATE TABLE CLASS (
+    Cls_code    VARCHAR(20),
+    Slot        VARCHAR(10),
+    Stime       TIMESTAMP(0),
+    Etime       TIMESTAMP(0),
+    Crs_code    VARCHAR(20),
+    Prof_id     VARCHAR(20),
+    Room_no     VARCHAR(10),
+    Sem_code    VARCHAR(10),
+    Day_of_week VARCHAR(10)
+);
+//In Oracle, the TIMESTAMP data type allows you to store date and time information with fractional seconds. The (0) in TIMESTAMP(0) specifies that there should be zero fractional seconds, meaning it will store the date and time without any fractional part of a second.
+
+Create table SEMESTER(sem_code varchar(20),term varchar(20),Year varchar(20),Sdate date,Edate date);
+
+Create table STUDENT(Reg_no varchar(20),Sname varchar(20),Address varchar(20),DoB date,Email varchar(20),Mobile varchar(20),Dept_id varchar(20),Prof_id varchar(20));
+
+Create table ENROLL(Cls_code varchar(20),Reg_no varchar(20),Enroll_time timestamp(0), Grade CHAR(1) CHECK (Grade IN ('S', 'A', 'B', 'C', 'D')));
+
+Create table STUDENT_VISA(Reg_no varchar(20),Visa_status Varchar(20));
+
+Create table PROGRAMME(Prog_code varchar(20), Prog_name varchar(20), Prog_preamble varchar(200), Scode varchar(20), Dept_id varchar(20));
+
+----------------------------------
+
+PRIMARY 
+
+alter table PROFESSOR add constraint pk_1 primary key(prof_id);
+
+alter table School add constraint pk_2 primary key(SCode);alter table Department add constraint pk_3 primary key(Dept_id);
+
+alter table Department add constraint pk_3 primary key(Dept_id);
+.
+.
+Similarly primary key for all table...
+-----------------------------------------------------------
+FORIEGN key
+
+alter table PROFESSOR add constraint fk_Dept foreign key(Dept_id) references DEPARTMENT(Dept_id) deferrable initially deferred;
+
+alter table SCHOOL add constraint fk_Prof_id foreign key(Prof_id) references PROFESSOR(Prof_id) deferrable initially deferred;
+
+alter table DEPARTMENT add constraint fk_Profid foreign key(Prof_id) references PROFESSOR(Prof_id) deferrable initially deferred;
+
+alter table DEPARTMENT add constraint fk_SCode foreign key(SCode) references SCHOOL(SCode) deferrable initially deferred;
+
+alter table CLASS add constraint fk_Crs_code foreign key(Crs_code) references COURSE(Crs_code);
+
+alter table CLASS add constraint fk_Prfid foreign key(Prof_id) references PROFESSOR (Prof_id);
+
+alter table CLASS add constraint fk_SemCode foreign key(Sem_code) references Semester(Sem_code);
+
+alter table STUDENT add constraint fk_Depid foreign key(Dept_id) references DEPARTMENT (Dept_id);
+
+alter table STUDENT add constraint fk_Proid foreign key(Prof_id) references PROFESSOR (Prof_id);
+
+alter table Enroll add constraint fk_ClsCode foreign key(Cls_code) references CLASS (Cls_code);
+
+alter table Enroll add constraint fk_RegNo foreign key(Reg_no) references STUDENT (Reg_no);
+
+alter table PROGRAMME add constraint fk_SC foreign key(Scode) references SCHOOL (SCode);
+
+alter table PROGRAMME add constraint fk_DepI foreign key(Dept_id) references DEPARTMENT (Dept_id);
+
+----------------------------
+TO SEE CONSTRAINT NAMES
+
+SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE 
+FROM USER_CONSTRAINTS 
+WHERE TABLE_NAME = 'PROGRAMME';
+---------------------

@@ -1,0 +1,283 @@
+
+//CREATING TABLES
+create table PROFESSOR(Prof_id varchar(5), Prof_name varchar(10), Email varchar(25), Mobile number(10), Specialty varchar(20), Dept_id varchar(4));
+create table DEPARTMENT(Dept_id varchar(4), Dname varchar(10), SCode varchar(4), Prof_id varchar(5));
+create table SCHOOL(SCode varchar(4), Scl_name varchar(50), Prof_id varchar(5), Location varchar(20));
+create table COURSE(Crs_code varchar(4), Crs_name varchar(20), Description varchar(30), Credits number(2), Hours number(4)); 
+create table CLASS(Cls_code varchar(4), Slot varchar(10), Stime timestamp, Etime timestamp, Crs_code varchar(4), Prof_id varchar(5), Room_no varchar(4), Sem_code varchar(6), Day_of_week varchar(10));
+create table SEMESTER(Sem_code varchar(6), Term varchar(5), Year INT, Sdate date , Edate date);
+create table STUDENT(Reg_no varchar(4), Sname varchar(20), Address varchar(20), DoB date, Email varchar(20), Mobile number(10), Dept_id varchar(4), Prof_id varchar(5));
+create table ENROLL(Cls_code varchar(4), Reg_no varchar(4), Enroll_time timestamp(0), Grade varchar(2));
+create table STUDENT_VISA(Reg_no varchar(4), Visa_status char(3));
+create table PROGRAMME(Prog_code varchar(4), Prog_name varchar(20), Prog_preamble varchar(35), Scode varchar(4), Dept_id varchar(4));
+
+
+//ALTERING COMMANDS
+ //putting primary keys
+alter table PROFESSOR add constraint pk_pid primary key(Prof_id);  
+alter table DEPARTMENT add constraint pk_did primary key(Dept_id);
+alter table SCHOOL add constraint pk_sd primary key(SCode);
+alter table COURSE add constraint pk_crsd primary key(Crs_code);
+alter table CLASS add constraint pk_clsd primary key(Cls_code);
+alter table SEMESTER add constraint pk_smd primary key(Sem_code);
+alter table STUDENT add constraint pk_reg primary key(Reg_no);
+alter table ENROLL add constraint pk_clsd_reg primary key(Cls_code,Reg_no);
+alter table STUDENT_VISA add constraint pk_reggno primary key(Reg_no);
+alter table PROGRAMME add constraint pk_pgd primary key(Prog_code);
+
+ //putting foreign keys
+alter table PROFESSOR add constraint fk_did foreign key(Dept_id) references DEPARTMENT(Dept_id) deferrble iniially deferred;
+alter table DEPARTMENT add constraint fk_profid4 foreign key(Prof_id) references PROFESSOR(Prof_id) deferrble iniially deferred;
+alter table SCHOOL add constraint fk_profid3 foreign key(Prof_id) references PROFESSOR(Prof_id) ;
+alter table CLASS add constraint fk_semcode foreignkey(Sem_code) references SEMESTER(Sem_code);
+alter table CLASS add constraint fk_profid2 foreignkey(Prof_id) references PROFESSOR(Prof_id);
+alter table STUDENT add constraint fk_profid1 foreignkey(Prof_id) references PROFESSOR(Prof_id);
+alter table STUDENT add constraint fk_did2 foreign key(Dept_id) references DEPARTMENT(Dept_id);
+alter table PROGRAMME add constraint fk_did foreign key(Dept_id) references DEPARTMENT(Dept_id);
+
+//check constraint
+alter table PROFESSOR add constraint chk_prof_id check(length(prof_id)=5); 
+alter table PROFESSOR add constraint chk_mno check(length(Mobile)=10);
+alter table PROFESSOR add constraint chk_email check(Email LIKE'%@%');
+alter table SEMESTER add constraint chk_sem_code_prefix check(Sem_code LIKE'WIN%' OR Sem_code LIKE'Fall%');
+alter table SEMESTER add constraint chk_vterm check(Term LIKE'WINTER' OR Term LIKE'Fall');
+alter table STUDENT add constraint chk_mno check(length(Mobile)=10);
+alter table STUDENT add constraint chk_email check(Email LIKE'%@%');
+ALTER TABLE ENROLL ADD CONSTRAINT chk_grade CHECK (grade IN ('S', 'A', 'B', 'C', 'D'));
+  
+ //unique constraint
+alter table PROFESSOR add constraint uk_mno unique(Mobile);
+alter table PROFESSOR add constraint uk_email unique(Email);
+alter table STUDENT add constraint uk_mno unique(Mobile);
+alter table STUDENT add constraint uk_email unique(Email);
+
+//INSERTING VALUES INTERACTIVELY
+insert into PROFESSOR values(&Prof_id,&Prof_name,&Email,&Mobile,&Specialty,&Dept_id);
+insert into DEPARTMENT values(&Dept_id, &Dname, &SCode, &Prof_id);
+insert into SCHOOL values(&SCode, &Scl_name, &Prof_id , &Location);
+insert into COURSE values(&Crs_code , &Crs_name , &Description , &Credits , &Hours);
+insert into CLASS values(&Cls_code , &Slot , &Stime , &Etime , &Crs_code , &Prof_id , &Room_no, &Sem_code , &Day_of_week);
+insert into SEMESTER values(&Sem_code, &Term , &Year, &Sdate, &Edate);
+insert into STUDENT values(&Reg_no , &Sname , &Address, &DoB, &Email , &Mobile, &Dept_id , &Prof_id );
+insert into ENROLL values(&Cls_code, &Reg_no , &Enroll_time , &Grade);
+insert into STUDENT_VISA values(&Reg_no, &Visa_status);
+insert into PROGRAMME values(&Prog_code , &Prog_name, &Prog_preamble, &Scode , &Dept_id);
+
+ //inserting in professor table
+INSERT INTO PROFESSOR(Prof_id, Prof_name, Email, Mobile, Specialty, Dept_id) 
+VALUES ('p1001', 'Mukund', 'muk@cs.com', 1029836756, 'Soft Computing', 'd01');
+
+INSERT INTO PROFESSOR(Prof_id, Prof_name, Email, Mobile, Specialty, Dept_id) 
+VALUES ('p1002', 'Shambhavi', 'shambhavi@cs.com', 9998761234, 'Networking', 'd02');
+
+INSERT INTO PROFESSOR(Prof_id, Prof_name, Email, Mobile, Specialty, Dept_id) 
+VALUES ('p1003', 'Rohit', 'rohit@eee.com', 9871236540, 'Power Systems', 'd03');
+
+INSERT INTO PROFESSOR(Prof_id, Prof_name, Email, Mobile, Specialty, Dept_id) 
+VALUES ('p1004', 'Alok', 'alok@mech.com', 9654321890, 'Thermodynamics', 'd04');
+
+INSERT INTO PROFESSOR(Prof_id, Prof_name, Email, Mobile, Specialty, Dept_id) 
+VALUES ('p2001', 'Dr. Gupta', 'gupta@med.com', 9123456789, 'Neurology', 'd06');
+
+INSERT INTO PROFESSOR(Prof_id, Prof_name, Email, Mobile, Specialty, Dept_id) 
+VALUES ('p2002', 'Dr. Bose', 'bose@med.com', 9988771122, 'Cardiology', 'd07');
+
+INSERT INTO PROFESSOR(Prof_id, Prof_name, Email, Mobile, Specialty, Dept_id) 
+VALUES ('p2003', 'Dr. Iyer', 'iyer@med.com', 9988776655, 'Dermatology', 'd08');
+
+ //insert into Department table
+INSERT INTO DEPARTMENT(Dept_id, Dname, SCode, Prof_id) 
+VALUES ('d01', 'CSE', 's001', 'p1001');
+
+INSERT INTO DEPARTMENT(Dept_id, Dname, SCode, Prof_id) 
+VALUES ('d02', 'IT', 's001', 'p1002');
+
+INSERT INTO DEPARTMENT(Dept_id, Dname, SCode, Prof_id) 
+VALUES ('d03', 'EEE', 's002', 'p1003');
+
+INSERT INTO DEPARTMENT(Dept_id, Dname, SCode, Prof_id) 
+VALUES ('d04', 'ME', 's003', 'p1004');
+
+INSERT INTO DEPARTMENT(Dept_id, Dname, SCode, Prof_id) 
+VALUES ('d06', 'Neurology', 's006', 'p2001');
+
+INSERT INTO DEPARTMENT(Dept_id, Dname, SCode, Prof_id) 
+VALUES ('d07', 'Cardiology', 's006', 'p2002');
+
+INSERT INTO DEPARTMENT(Dept_id, Dname, SCode, Prof_id) 
+VALUES ('d08', 'Dermatology', 's006', 'p2003');
+
+  //insert values into school table
+INSERT INTO SCHOOL(SCode, Scl_name, Prof_id, Location) 
+VALUES ('s001', 'School of Computer Science', 'p1001', 'BLOCK SJT');
+
+INSERT INTO SCHOOL(SCode, Scl_name, Prof_id, Location) 
+VALUES ('s002', 'School of Electrical Engineering', 'p1003', 'BLOCK PRB');
+
+INSERT INTO SCHOOL(SCode, Scl_name, Prof_id, Location) 
+VALUES ('s003', 'School of Mechanical Engineering', 'p1004', 'BLOCK SMC');
+
+INSERT INTO SCHOOL(SCode, Scl_name, Prof_id, Location) 
+VALUES ('s004', 'School of Information Technology', 'p1002', 'BLOCK TT');
+
+INSERT INTO SCHOOL(SCode, Scl_name, Prof_id, Location) 
+VALUES ('s006', 'School of Medical Science', 'p2001', ' BLOCK SMED');
+
+INSERT INTO SCHOOL(SCode, Scl_name, Prof_id, Location) 
+VALUES ('s006', 'School of Medical Science', 'p2002', 'BLOCK SMED');
+
+INSERT INTO SCHOOL(SCode, Scl_name, Prof_id, Location) 
+VALUES ('s006', 'School of Medical Science', 'p2003', 'Block SMED');
+
+
+// insert into course table
+INSERT INTO COURSE(Crs_code, Crs_name, Description, Credits, Hours) 
+VALUES ('crs01', 'Data Structures', 'Study of DS', 3, 45);
+
+INSERT INTO COURSE(Crs_code, Crs_name, Description, Credits, Hours) 
+VALUES ('crs02', 'Operating Systems', 'OS Concepts', 3, 45);
+
+INSERT INTO COURSE(Crs_code, Crs_name, Description, Credits, Hours) 
+VALUES ('crs03', 'Power Electronics', 'Power Systems', 4, 60);
+
+INSERT INTO COURSE(Crs_code, Crs_name, Description, Credits, Hours) 
+VALUES ('crs04', 'Thermodynamics', 'Heat Transfer', 4, 60);
+
+INSERT INTO COURSE(Crs_code, Crs_name, Description, Credits, Hours) 
+VALUES ('crs06', 'Neurology', 'Study of Neurological Disorders', 4, 50);
+
+INSERT INTO COURSE(Crs_code, Crs_name, Description, Credits, Hours) 
+VALUES ('crs07', 'Cardiology', 'Heart and Circulatory System', 4, 50);
+
+INSERT INTO COURSE(Crs_code, Crs_name, Description, Credits, Hours) 
+VALUES ('crs08', 'Dermatology', 'Study of Skin Diseases', 3, 45);
+
+//insert into class table
+INSERT INTO CLASS(Cls_code, Slot, Stime, Etime, Crs_code, Prof_id, Room_no, Sem_code, Day_of_week) 
+VALUES ('cls01', 'Morning', '2024-09-01 08:00:00', '2024-09-01 10:00:00', 'crs01', 'p1001', 'R101', 'WIN24', 'Monday');
+
+INSERT INTO CLASS(Cls_code, Slot, Stime, Etime, Crs_code, Prof_id, Room_no, Sem_code, Day_of_week) 
+VALUES ('cls02', 'Afternoon', '2024-09-01 14:00:00', '2024-09-01 16:00:00', 'crs02', 'p1002', 'R102', 'WIN24', 'Tuesday');
+
+INSERT INTO CLASS(Cls_code, Slot, Stime, Etime, Crs_code, Prof_id, Room_no, Sem_code, Day_of_week) 
+VALUES ('cls03', 'Morning', '2024-09-02 09:00:00', '2024-09-02 11:00:00', 'crs03', 'p1003', 'R103','WIN24' , 'Wednesday');
+
+INSERT INTO CLASS(Cls_code, Slot, Stime, Etime, Crs_code, Prof_id, Room_no, Sem_code, Day_of_week) 
+VALUES ('cls04', 'Evening', '2024-09-02 16:00:00', '2024-09-02 18:00:00', 'crs04', 'p1004', 'R104', 'WIN24', 'Thursday');
+
+INSERT INTO CLASS(Cls_code, Slot, Stime, Etime, Crs_code, Prof_id, Room_no, Sem_code, Day_of_week) 
+VALUES ('cls06', 'Morning', '2024-09-01 08:00:00', '2024-09-01 10:00:00', 'crs06', 'p2001', 'R201', 'Fall24', 'Friday');
+
+INSERT INTO CLASS(Cls_code, Slot, Stime, Etime, Crs_code, Prof_id, Room_no, Sem_code, Day_of_week) 
+VALUES ('cls07', 'Afternoon', '2024-09-01 14:00:00', '2024-09-01 16:00:00', 'crs07', 'p2002', 'R202', 'Fall24', 'Tuesday');
+
+INSERT INTO CLASS(Cls_code, Slot, Stime, Etime, Crs_code, Prof_id, Room_no, Sem_code, Day_of_week) 
+VALUES ('cls08', 'Evening', '2024-09-02 16:00:00', '2024-09-02 18:00:00', 'crs08', 'p2003', 'R203', 'Fall24', 'Thursday');
+
+
+//insert into semester table
+INSERT INTO SEMESTER(Sem_code, Term, Year, Sdate, Edate)
+VALUES ('Win01', 'Winter', '2023', TO_DATE('01-AUG-2023', 'DD-MON-YYYY'), TO_DATE('15-DEC-2023', 'DD-MON-YYYY'));
+INSERT INTO SEMESTER(Sem_code, Term, Year, Sdate, Edate)
+VALUES ('Win02', 'Fall', '2023', TO_DATE('01-JAN-2023', 'DD-MON-YYYY'), TO_DATE('15-MAY-2023', 'DD-MON-YYYY'));
+INSERT INTO SEMESTER(Sem_code, Term, Year, Sdate, Edate) 
+VALUES ('Win03', 'Winter', 2024, TO_DATE('01-JAN-2024', 'DD-MON-YYYY'), TO_DATE('15-JUN-2024', 'DD-MON-YYYY'));
+
+INSERT INTO SEMESTER(Sem_code, Term, Year, Sdate, Edate) 
+VALUES ('Fall01', 'Fall', 2024, TO_DATE('01-JUL-2024', 'DD-MON-YYYY'), TO_DATE('15-DEC-2024', 'DD-MON-YYYY'));
+
+INSERT INTO SEMESTER(Sem_code, Term, Year, Sdate, Edate) 
+VALUES ('Win04', 'Winter', 2025, TO_DATE('01-JAN-2025', 'DD-MON-YYYY'), TO_DATE('15-JUN-2025', 'DD-MON-YYYY'));
+
+
+
+
+//insert into student table
+INSERT INTO STUDENT(Reg_no, Sname, Address, DoB, Email, Mobile, Dept_id, Prof_id) 
+VALUES ('s1001', 'KUNAL', 'zirakpur 3434', '2000-01-01', 'kunal@student.com', 9876543210, 'd01', 'p1001');
+
+INSERT INTO STUDENT(Reg_no, Sname, Address, DoB, Email, Mobile, Dept_id, Prof_id) 
+VALUES ('s1002', 'SIMAR', 'chandigarh 3456', '1999-02-15', 'simar@student.com', 9765432109, 'd02', 'p1002');
+
+INSERT INTO STUDENT(Reg_no, Sname, Address, DoB, Email, Mobile, Dept_id, Prof_id) 
+VALUES ('s1003', 'ASHITA', 'delhi 2456', '2002-03-22', 'ashita@student.com', 9654321098, 'd03', 'p1003');
+
+INSERT INTO STUDENT(Reg_no, Sname, Address, DoB, Email, Mobile, Dept_id, Prof_id) 
+VALUES ('s1004', 'BARLEEN', 'vellore 101', '2003-04-30', 'barleen@student.com', 9543210987, 'd04', 'p1004');
+
+INSERT INTO STUDENT(Reg_no, Sname, Address, DoB, Email, Mobile, Dept_id, Prof_id) 
+VALUES ('s2001', 'PRINKAL', 'Haryana 202 ', '2001-05-18', 'prinkal@student.com', 9432109876, 'd06', 'p2001');
+
+INSERT INTO STUDENT(Reg_no, Sname, Address, DoB, Email, Mobile, Dept_id, Prof_id) 
+VALUES ('s2002', 'MANSI', 'tiruchhippali 303', '1995-06-24', 'mansi@student.com', 9321098765, 'd07', 'p2002');
+
+INSERT INTO STUDENT(Reg_no, Sname, Address, DoB, Email, Mobile, Dept_id, Prof_id) 
+VALUES ('s2003', 'CHARU', 'uttarpradesh 404', '1994-07-15', 'charu@student.com', 9210987654, 'd08', 'p2003');
+
+//insert into enroll table
+INSERT INTO ENROLL(Cls_code, Reg_no, Enroll_time, Grade) 
+VALUES ('cls01', 's1001', '2024-09-01 08:00:00', 'S');
+
+INSERT INTO ENROLL(Cls_code, Reg_no, Enroll_time, Grade) 
+VALUES ('cls02', 's1002', '2024-09-01 14:00:00', 'B');
+
+INSERT INTO ENROLL(Cls_code, Reg_no, Enroll_time, Grade) 
+VALUES ('cls03', 's1003', '2024-09-02 09:00:00', 'A');
+
+INSERT INTO ENROLL(Cls_code, Reg_no, Enroll_time, Grade) 
+VALUES ('cls04', 's1004', '2024-09-02 16:00:00', 'S');
+
+INSERT INTO ENROLL(Cls_code, Reg_no, Enroll_time, Grade) 
+VALUES ('cls06', 's2001', '2024-09-01 08:00:00', 'A');
+
+INSERT INTO ENROLL(Cls_code, Reg_no, Enroll_time, Grade) 
+VALUES ('cls07', 's2002', '2024-09-01 14:00:00', 'B');
+
+INSERT INTO ENROLL(Cls_code, Reg_no, Enroll_time, Grade) 
+VALUES ('cls08', 's2003', '2024-09-02 16:00:00', 'A');
+
+
+//insert into student visa
+INSERT INTO STUDENT_VISA(Reg_no, Visa_status) 
+VALUES ('s1001', 'YES');
+
+INSERT INTO STUDENT_VISA(Reg_no, Visa_status) 
+VALUES ('s1002', 'NO');
+
+INSERT INTO STUDENT_VISA(Reg_no, Visa_status) 
+VALUES ('s1003', 'YES');
+
+INSERT INTO STUDENT_VISA(Reg_no, Visa_status) 
+VALUES ('s1004', 'NO');
+
+INSERT INTO STUDENT_VISA(Reg_no, Visa_status) 
+VALUES ('s2001', 'YES');
+
+INSERT INTO STUDENT_VISA(Reg_no, Visa_status) 
+VALUES ('s2002', 'YES');
+
+INSERT INTO STUDENT_VISA(Reg_no, Visa_status) 
+VALUES ('s2003', 'NO');
+
+//insert into programee table
+INSERT INTO PROGRAMME(Prog_code, Prog_name, Prog_preamble, Scode, Dept_id) 
+VALUES ('pg01', 'BSc Computer Science', 'Undergraduate degree in Computer Science', 's001', 'd01');
+
+INSERT INTO PROGRAMME(Prog_code, Prog_name, Prog_preamble, Scode, Dept_id) 
+VALUES ('pg02', 'BTech IT', 'Undergraduate degree in Information Technology', 's004', 'd02');
+
+INSERT INTO PROGRAMME(Prog_code, Prog_name, Prog_preamble, Scode, Dept_id) 
+VALUES ('pg03', 'BTech Electrical', 'Undergraduate degree in Electrical Engineering', 's002', 'd03');
+
+INSERT INTO PROGRAMME(Prog_code, Prog_name, Prog_preamble, Scode, Dept_id) 
+VALUES ('pg04', 'BTech Mechanical', 'Undergraduate degree in Mechanical Engineering', 's003', 'd04');
+
+INSERT INTO PROGRAMME(Prog_code, Prog_name, Prog_preamble, Scode, Dept_id) 
+VALUES ('pg05', 'MBBS', 'Bachelor of Medicine, Bachelor of Surgery', 's006', 'd06');
+
+INSERT INTO PROGRAMME(Prog_code, Prog_name, Prog_preamble, Scode, Dept_id) 
+VALUES ('pg06', 'MD Neurology', 'Postgraduate degree in Neurology', 's006', 'd06');
+
+INSERT INTO PROGRAMME(Prog_code, Prog_name, Prog_preamble, Scode, Dept_id) 
+VALUES ('pg07', 'MS Cardiology', 'Postgraduate degree in Cardiology', 's006', 'd07');
+

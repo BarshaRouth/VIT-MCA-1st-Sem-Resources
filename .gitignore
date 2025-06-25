@@ -1,0 +1,13 @@
+# System files
+Thumbs.db
+.DS_Store
+
+# VS Code settings
+.vscode/
+
+# Temporary files
+*.tmp
+~$*
+
+# Ignore any unnecessary backup files
+*.bak
